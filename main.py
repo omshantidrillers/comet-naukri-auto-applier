@@ -94,11 +94,10 @@ def main():
     print("Comet Naukri Auto Applier - Fully Automated")
     print("="*70 + "\n")
     
-    driver = None
+driver = None
     try:
-        if not launch_comet():
-            print("Failed to launch Comet")
-            return 1
+        launch_comet_browser()
+        time.sleep(2)
         
         print("\nConnecting to Comet browser...")
         options = webdriver.ChromeOptions()
@@ -107,8 +106,15 @@ def main():
         print("Connected to Comet Browser")
         
         print("\nClicking Assistant button...")
-        if not click_assistant(driver):
-            print("Could not click Assistant - trying direct input...")
+        click_assistant(driver)
+        
+        print("\nTyping and submitting prompt...")
+        if not type_and_submit_prompt(driver):
+            print("Error in prompt submission")
+            return 1
+        
+        print("\nMonitoring job applications...")
+        wait_completion(driver)            print("Could not click Assistant - trying direct input...")
         
         print("\nTyping and submitting prompt...")
         if not type_and_submit_prompt(driver):
