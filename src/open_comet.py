@@ -1,63 +1,70 @@
+#!/usr/bin/env python3
 """
 Open Comet AI Assistant locally
-Launches Chrome with Comet extension
+Launches Comet browser (installed separately)
+Uses pyautogui for automation
 """
-
 import os
 import time
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+import subprocess
+import pyautogui
+import pygetwindow as gw
 
 def open_comet_browser():
     """
-    Opens Chrome browser with Comet AI Assistant
-    Returns selenium webdriver instance
+    Opens Comet browser (installed on system)
+    Returns True if successful, False otherwise
     """
     try:
-        # Set Chrome options
-        options = webdriver.ChromeOptions()
+        print("Opening Comet browser...")
         
-        # Add Comet extension (if you have the extension ID)
-        extension_id = os.getenv('COMET_EXTENSION_ID')
-        if extension_id:
-            options.add_extension(extension_id)
+        # Launch Comet browser via command line
+        # Adjust the path based on your installation
+        comet_path = os.path.expanduser('~/.comet/comet.exe')
         
-        # Set user data directory for persistent login
-        user_data_dir = os.path.expanduser('~/.comet-naukri-applier')
-        options.add_argument(f'user-data-dir={user_data_dir}')
+        # If not found in user path, try common installation paths
+        if not os.path.exists(comet_path):
+            comet_path = 'C:\\Program Files\\Comet\\comet.exe'
         
-        # Start maximized
-        options.add_argument('--start-maximized')
+        if not os.path.exists(comet_path):
+            comet_path = 'comet'  # Try system PATH
         
-        # Initialize webdriver
-        driver = webdriver.Chrome(options=options)
+        # Open Comet browser
+        subprocess.Popen(comet_path)
         
-        # Navigate to Comet Perplexity
-        driver.get('https://www.perplexity.ai')
+        # Wait for Comet to start
+        time.sleep(5)
         
-        # Wait for Comet to load (max 30 seconds)
+        # Try to find and focus the Comet window
         try:
-            WebDriverWait(driver, 30).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "[role='textbox']"))
-            )
-            time.sleep(2)  # Extra wait for full load
+            comet_windows = gw.getWindowsWithTitle('Comet')
+            if comet_windows:
+                comet_window = comet_windows[0]
+                comet_window.activate()
+                time.sleep(2)
+                print("Comet browser opened and focused")
+                return True
         except:
-            pass  # Continue even if element not found
+            print("Comet browser opened (could not activate window)")
+            return True
         
-        return driver
+        return True
         
     except Exception as e:
         print(f"Error opening Comet browser: {str(e)}")
-        return None
+        return False
 
-def close_browser(driver):
+def focus_comet_browser():
     """
-    Closes the browser instance
+    Focuses on the Comet browser window if it's already open
     """
     try:
-        driver.quit()
-        return True
+        comet_windows = gw.getWindowsWithTitle('Comet')
+        if comet_windows:
+            comet_window = comet_windows[0]
+            comet_window.activate()
+            time.sleep(1)
+            return True
     except:
-        return False
+        pass
+    return False
