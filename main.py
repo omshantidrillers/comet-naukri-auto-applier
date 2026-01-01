@@ -1,29 +1,33 @@
-#!/usr/bin/env python3
-import time
-import subprocess
-import sys
-from pathlib import Path
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-PROMPT = """You are a job search assistant on Naukri.com.
-1. Search for: Cloud Engineer, Senior Cloud Engineer, DevOps Engineer
-2. Locations: Pan India, Gurugram, Remote
-3. Experience: 3-6 years, Posted within: Last 24 hours
-4. Apply to exactly 5 jobs that match criteria
-5. Skip consultancy jobs and duplicates
-6. Use message: 'I have 3+ years cloud infrastructure, automation, CI/CD, and Kubernetes experience. Looking forward to contributing.'
-7. Return summary of 5 jobs applied with company name, job title, location"""
-
-def launch_comet():
-    print("Launching Comet Browser...")
+21:0
+def launch_comet_browser():
+    """Launches Comet Browser application"""
     system = sys.platform
-    try:
-        if system == 'win32':
-            paths = [r"C:\Program Files\Comet\Comet.exe", rf"C:\Users\{Path.home().name}\AppData\Local\Comet\Comet.exe"]
+    
+    if system == 'win32':
+        comet_paths = [
+            r"C:\Program Files\Comet\Comet.exe",
+            r"C:\Program Files (x86)\Comet\Comet.exe",
+            rf"C:\Users\{Path.home().name}\AppData\Local\Comet\Comet.exe",
+        ]
+        for path in comet_paths:
+            if Path(path).exists():
+                subprocess.Popen(path)
+                print(f"Launched from: {path}")
+                time.sleep(3)
+                return
+        subprocess.Popen(['start', 'comet'], shell=True)
+        print("Launched via system command")
+        time.sleep(3)
+    
+    elif system == 'darwin':
+        subprocess.Popen(['open', '-a', 'Comet'])
+        print("Launched Comet application")
+        time.sleep(3)
+    
+    elif system == 'linux':
+        subprocess.Popen(['comet'])
+        print("Launched Comet application")
+        time.sleep(3)            paths = [r"C:\Program Files\Comet\Comet.exe", rf"C:\Users\{Path.home().name}\AppData\Local\Comet\Comet.exe"]
             for p in paths:
                 if Path(p).exists():
                     subprocess.Popen(p)
@@ -147,3 +151,4 @@ try:
 
 if __name__ == "__main__":
     sys.exit(main())
+21
