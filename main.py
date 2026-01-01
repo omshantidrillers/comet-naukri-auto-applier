@@ -100,9 +100,13 @@ driver = None
         time.sleep(2)
         
         print("\nConnecting to Comet browser...")
-        options = webdriver.ChromeOptions()
-        options.add_argument("--remote-debugging-port=9222")
-        driver = webdriver.Chrome(options=options)
+try:
+            driver = webdriver.Chrome()  # Connect to Comet via debugging port
+            print("Connected to Comet Browser")
+        except Exception as e:
+            print(f"Error connecting to Comet: {e}")
+            print("Make sure Comet is running on port 9222")
+            return 1
         print("Connected to Comet Browser")
         
         print("\nClicking Assistant button...")
