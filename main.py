@@ -1,4 +1,25 @@
-21:0
+#!/usr/bin/env python3
+import time
+import subprocess
+import sys
+from pathlib import Path
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+
+PROMPT = """You are a job search assistant on Naukri.com.
+1. Search for: Cloud Engineer, Senior Cloud Engineer, DevOps Engineer
+2. Locations: Pan India, Gurugram, Remote
+3. Experience: 3-6 years, Posted within: Last 24 hours
+4. Apply to exactly 5 jobs that match criteria
+5. Skip consultancy jobs and duplicates
+6. Use message: 'I have 3+ years cloud infrastructure, automation, CI/CD, and Kubernetes experience. Looking forward to contributing.'
+7. Return summary of 5 jobs applied with company name, job title, location"""
+
+
 def launch_comet_browser():
     """Launches Comet Browser application"""
     system = sys.platform
@@ -27,28 +48,8 @@ def launch_comet_browser():
     elif system == 'linux':
         subprocess.Popen(['comet'])
         print("Launched Comet application")
-        time.sleep(3)            paths = [r"C:\Program Files\Comet\Comet.exe", rf"C:\Users\{Path.home().name}\AppData\Local\Comet\Comet.exe"]
-            for p in paths:
-                if Path(p).exists():
-                    subprocess.Popen(p)
-                    print(f"Launched from: {p}")
-                    time.sleep(4)
-                    return True
-        elif system == 'darwin':
-            subprocess.Popen(['open', '-a', 'Comet'])
-            print("Launched Comet")
-            time.sleep(4)
-            return True
-        elif system == 'linux':
-            subprocess.Popen(['comet'])
-            print("Launched Comet")
-            time.sleep(4)
-            return True
-    except Exception as e:
-        print(f"Error: {e}")
-    return False
+        time.sleep(3)
 
-49
 
 def click_assistant(driver):
     try:
@@ -61,6 +62,7 @@ def click_assistant(driver):
     except Exception as e:
         print(f"Error clicking Assistant: {e}")
         return False
+
 
 def type_and_submit_prompt(driver):
     try:
@@ -78,6 +80,7 @@ def type_and_submit_prompt(driver):
         print(f"Error submitting prompt: {e}")
         return False
 
+
 def wait_completion(driver):
     print("Waiting for Comet to apply jobs (this may take 2-5 minutes)...")
     start = time.time()
@@ -93,36 +96,28 @@ def wait_completion(driver):
     print("Task may still be running...")
     return False
 
+
 def main():
     print("\n" + "="*70)
     print("Comet Naukri Auto Applier - Fully Automated")
     print("="*70 + "\n")
     
-driver = None
+    driver = None
     try:
         launch_comet_browser()
         time.sleep(2)
         
         print("\nConnecting to Comet browser...")
-try:
-            driver = webdriver.Chrome()  # Connect to Comet via debugging port
+        try:
+            driver = webdriver.Chrome()
             print("Connected to Comet Browser")
         except Exception as e:
             print(f"Error connecting to Comet: {e}")
             print("Make sure Comet is running on port 9222")
             return 1
-        print("Connected to Comet Browser")
         
         print("\nClicking Assistant button...")
         click_assistant(driver)
-        
-        print("\nTyping and submitting prompt...")
-        if not type_and_submit_prompt(driver):
-            print("Error in prompt submission")
-            return 1
-        
-        print("\nMonitoring job applications...")
-        wait_completion(driver)            print("Could not click Assistant - trying direct input...")
         
         print("\nTyping and submitting prompt...")
         if not type_and_submit_prompt(driver):
@@ -149,6 +144,6 @@ try:
             except:
                 pass
 
+
 if __name__ == "__main__":
     sys.exit(main())
-21
