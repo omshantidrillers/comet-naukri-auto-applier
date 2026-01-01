@@ -163,7 +163,8 @@ def open_comet_with_selenium():
         except:
             return None
 
-def inject_prompt_to_comet(driver):
+190
+(driver):
     """
     Finds and clicks the assistant button on top right
     Then types the job search prompt in the input field
@@ -176,12 +177,11 @@ def inject_prompt_to_comet(driver):
         
         # Try multiple selectors for assistant button
         assistant_selectors = [
-            "//button[contains(@aria-label, 'assistant')]",
-            "//button[contains(@aria-label, 'Assistant')]",
-            "//div[@class='copilot-button']",
             "//button[contains(text(), 'Assistant')]",
-            "//button[contains(@class, 'assistant')]",
-        ]
+                        "//button[contains(@aria-label, 'Assistant')]",
+                        "//button[@class*='assistant']",
+                        "//div[@role='button' and contains(text(), 'Assistant')]",
+            
         
         assistant_button = None
         for selector in assistant_selectors:
