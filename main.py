@@ -1,9 +1,63 @@
 #!/usr/bin/env python3
-import os
 import pyperclip
-from dotenv import load_dotenv
 
-load_dotenv()
+PROMPT = """You are a job search assistant. Your task is to help me apply for jobs on Naukri.com.
+
+Please follow these instructions carefully:
+
+1. LOGIN & NAVIGATION:
+   - Go to https://www.naukri.com
+   - Log in with my credentials if needed
+   - Navigate to the jobs search page
+
+2. JOB SEARCH CRITERIA:
+   - Search for these job roles (any of these):
+     * Cloud Engineer
+     * Senior Cloud Engineer
+     * DevOps Engineer
+   - Locations: Pan India, Gurugram, Remote (all acceptable)
+   - Experience: 3-6 years
+   - Posted within: Last 24 hours only
+
+3. APPLY TO JOBS:
+   - Find jobs matching the above criteria
+   - Apply to exactly 5 jobs that best match the requirements
+   - For each job, verify:
+     * Role matches my target positions
+     * Location is acceptable
+     * Experience requirement matches (3-6 years)
+   - Skip jobs that are:
+     * From recruitment consultancies/staffing
+     * Duplicate applications (already applied)
+     * Outside my skill set
+
+4. APPLICATION DETAILS:
+   - When applying, use my existing resume
+   - If a note/message is required, use:
+     "I have 3+ years of experience in cloud infrastructure, automation, CI/CD, and Kubernetes. Looking forward to contributing to your team."
+   - Don't modify this message
+
+5. TRACKING:
+   - After applying to each job, note down:
+     * Company name
+     * Job title
+     * Location
+   - Stop after applying to exactly 5 jobs
+
+6. RETURN INFORMATION:
+   - Provide a summary of the 5 jobs you applied to
+   - Include company name, job title, and location for each
+   - Confirm successful completion
+
+My Skills & Experience:
+- Cloud Platforms: Azure, AWS basics, VMware
+- Automation: Ansible, Terraform, PowerShell
+- Kubernetes & Container Orchestration
+- Linux & Windows Server Administration
+- CI/CD: GitLab pipelines
+- Total Experience: 3-4 years in Cloud Infrastructure & DevOps
+
+IMPORTANT: Only apply to 5 jobs. Do not apply to more than 5. Do not apply to jobs that are not in the target roles or locations."""
 
 print("\n" + "="*70)
 print("Comet Naukri Auto Applier")
@@ -11,20 +65,9 @@ print("="*70)
 print()
 
 try:
-    prompt_file = 'prompts/comet_prompt.txt'
-    if not os.path.exists(prompt_file):
-        print(f"Error: {prompt_file} not found")
-        exit(1)
-    
-    with open(prompt_file, 'r', encoding='utf-8') as f:
-        prompt = f.read().strip()
-    
-    print(f"Prompt loaded ({len(prompt)} characters)")
-    print()
-    print("Copying prompt to clipboard...")
-    pyperclip.copy(prompt)
-    print("Done! Prompt is in your clipboard.")
-    print()
+    print(f"Copying prompt to clipboard ({len(PROMPT)} characters)...")
+    pyperclip.copy(PROMPT)
+    print("\n✓ Done! Prompt is in your clipboard.\n")
     print("Instructions:")
     print("1. Go to Comet Browser (already running)")
     print("2. Click the Assistant button (top right)")
@@ -33,6 +76,7 @@ try:
     print("5. Apply to 5 jobs in Comet")
     print()
     print("="*70)
+    print()
     
 except Exception as e:
     print(f"Error: {e}")
