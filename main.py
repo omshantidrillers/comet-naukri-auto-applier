@@ -45,7 +45,8 @@ def launch_comet():
     return False
 
 49
-(driver):
+
+def click_assistant(driver):
     try:
         wait = WebDriverWait(driver, 20)
         btn = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@class*='Assistant'] | //span[contains(text(), 'Assistant')]/ancestor::button | //*[@aria-label='Assistant'] | //button[.//span[contains(text(), 'Assistant')]] | //*[contains(text(), 'Assistant') and (@role='button' or self::button)]")))
